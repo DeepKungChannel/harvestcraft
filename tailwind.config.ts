@@ -8,6 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'soria': ['var(--font-soria)'],
+        'montserrat': ['var(--font-montserrat)'],
+        'kanit': ['var(--font-kanit)'],
+        'lato': ['var(--font-lato)'],
+        'inter': ['var(--font-inter)']
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

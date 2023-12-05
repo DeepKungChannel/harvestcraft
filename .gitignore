@@ -5,6 +5,12 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
+**/__pycache__
+
+yarn.lock
+
+# nginx
+/nginx-1.24.0
 
 # testing
 /coverage
@@ -34,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#backend
+/backend/test.py
+**/users.db

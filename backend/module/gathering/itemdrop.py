@@ -1,0 +1,2 @@
+def generateItemDrop(session):
+    pass
