@@ -20,11 +20,13 @@ export default function ClientPage() {
             <h1 className="text-[4rem] relative">HarvestCraft <span className="absolute top-[32%] -right-[3.5rem] text-[2rem] text-[#FF0000]">beta</span></h1>
         </div>
         <div className="flex gap-[3.6rem] justify-center mt-5 w-full">
-            <ButtonCard>
+            <Link href="/inventory">
+                <ButtonCard>
                 {/* picture */}
                 <Image width={200} height={200} className="w-[5rem] h-[5rem]" src={backpackimg} alt="backpack"/>  
                 <p className="text-[2rem]">Inventory</p>
-            </ButtonCard>
+                </ButtonCard>
+            </Link>
             <Link href="/gathering">
                 <ButtonCard>
                     {/* picture */}

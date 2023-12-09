@@ -44,3 +44,5 @@ next-env.d.ts
 #backend
 /backend/test.py
 **/users.db
+dev.py
+/backend/db/alembic

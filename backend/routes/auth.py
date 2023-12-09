@@ -47,7 +47,7 @@ async def signup(request: Request, body: SignupBody):
         if user is not None:
             return HTTPException(409, "User has already existed.")
         newUser = Users(id=uuid.uuid4(), username=username, email=email, password=generate_hash_password(password),
-                        create_date=datetime.datetime.utcnow(), level=0, xp=0, inventory={})
+                        create_date=datetime.datetime.utcnow(), level=0, xp=0, inventory={}, equipment={})
         sa.add(newUser)
         sa.commit()
     return {"status": 200}
@@ -56,7 +56,7 @@ class SigninBody(BaseModel) :
     username_or_email: str
     password: str
 
-@router.get("/signin")
+@router.post("/signin")
 async def signin(request: Request, body: SigninBody):
     session = UserSession(request)
     signedin = CheckSignin(session)

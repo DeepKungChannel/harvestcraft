@@ -4,6 +4,7 @@ import '@radix-ui/themes/styles.css';
 import { Inter, Kanit, Lato, Montserrat } from 'next/font/google'
 import localFont from 'next/font/local';
 import { NextFont, NextFontWithVariable } from 'next/dist/compiled/@next/font';
+import SocketProvider from './utils/sockets/socketProvider';
 
 const soriafont = localFont({ src: "../public/fonts/soria-font.ttf", variable: "--font-soria" })
 const montserrat = Montserrat({ variable: "--font-montserrat", weight: ['400', '600', '700', '800'], subsets: ["latin", 'latin-ext'] })
@@ -39,7 +40,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={`${generateFontclass()}`}>{children}</body>
+            <body className={`${generateFontclass()}`}><SocketProvider>{children}</SocketProvider></body>
         </html>
     )
 }
