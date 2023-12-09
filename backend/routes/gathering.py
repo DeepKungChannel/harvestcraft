@@ -48,7 +48,7 @@ async def sio_gathering(sid, data):
 
         # emit pg message
         # get delay time of tool
-        for i in range(100):
+        for i in range(1,101):
             await socketio_manager.emit("gather", {"pg": i}, room=user_session.get('id'))
             await asyncio.sleep(duration/100)
         

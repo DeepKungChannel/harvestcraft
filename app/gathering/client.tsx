@@ -1,5 +1,5 @@
 "use client"
-import { MouseEvent, ReactNode, useState } from "react"
+import { MouseEvent, ReactNode, useContext, useEffect, useState } from "react"
 import Levelbar from "../components/levelbar"
 import * as Progress from "@radix-ui/react-progress"
 import Navbar from "../components/navbar"
@@ -7,10 +7,27 @@ import Image from "next/image"
 
 import treeimg from '@/public/imgs/gathering/tree.png'
 import rockimg  from '@/public/imgs/gathering/rock.png'
+import { SocketContext } from "../utils/sockets/socketProvider"
+import { Socket } from "socket.io"
+
+
 
 export default function GatheringClientPage() {
+    const socket = useContext(SocketContext)
     const [pg, setpg] = useState(0)
     const [running, setRunning] = useState(false)
+
+    function listener(data: any) {
+        setpg(data.pg)
+    }
+    useEffect(() => {
+        if (socket) {
+            socket.on("gather", listener)
+            return () => {
+                socket.off("gather", listener)
+            }
+        }
+    }, [socket])
     return (
         <>
         <Navbar/>
@@ -20,10 +37,10 @@ export default function GatheringClientPage() {
             <p className={`text-[1.4rem] font-lato`}>Gathering the resource farm farm and farm!</p>
 
             <div className="mt-[5rem] flex justify-center gap-[15rem]">
-                <Box target="wood" setpg={setpg} runninginfo={{running, setRunning}}>
+                <Box target="wood" setpg={setpg} runninginfo={{running, setRunning}} socket={socket}>
                     <Image width={100} height={100} src={treeimg} quality={98} alt="tree" className="w-full h-full p-3"/>
                 </Box>
-                <Box target='stone' setpg={setpg} runninginfo={{running, setRunning}}> 
+                <Box target='stone' setpg={setpg} runninginfo={{running, setRunning}} socket={socket}> 
                     <Image width={100} height={100} src={rockimg} quality={98} alt="tree" className="w-full h-full p-5"/>
                 </Box>
             </div>
@@ -44,9 +61,21 @@ export default function GatheringClientPage() {
     )
 }
 
-function Box({children, target, setpg, runninginfo} : 
+type GatheringApiAck = {
+    status: number
+    response: any
+}
+
+type GatheringResponse = {
+    items: {name: string, count: number}
+    baseTime: number
+    xp: number
+}
+
+function Box({children, target, setpg, runninginfo, socket} : 
     { children: ReactNode, target: string, setpg: React.Dispatch<React.SetStateAction<number>> 
-        runninginfo: {running: boolean, setRunning: React.Dispatch<React.SetStateAction<boolean>>}
+        runninginfo: {running: boolean, setRunning: React.Dispatch<React.SetStateAction<boolean>>},
+        socket?: Socket
     }) 
     {
     
@@ -54,11 +83,16 @@ function Box({children, target, setpg, runninginfo} :
 
     async function StartGathering(e: MouseEvent) {
         if (!running) {
-            setpg(0)
             setRunning(true)
-            for (let i = 0; i <= 100; i+=1){
-                await new Promise((resolve, reject)=>{setTimeout(()=>{resolve(1)} , 5/100*1000)})
-                setpg(i)
+            if (socket) {
+                socket.emit("gather", {target}, (val: GatheringApiAck) => {
+                    if (val.status == 200) {
+                        console.log((val.response as GatheringResponse).items)
+                    }
+                    else {
+                        console.log(val.response)
+                    }
+                })
             }
             setRunning(false)
         }

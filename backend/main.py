@@ -20,5 +20,5 @@ app.include_router(auth.router, prefix="/api/harvestcraft/auth")
 app.include_router(gathering.router, prefix="/api/harvestcraft/gather")
 
 from sockets import socketioapp, socketio_manager
-app.mount(app=socketioapp, path='/')
+app.mount('/api/harvestcraft/ws',socketioapp)
 
