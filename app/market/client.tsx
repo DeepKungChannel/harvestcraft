@@ -21,7 +21,7 @@ export default function MarketClientPage() {
             
             {/* Search box */}
             <div className="flex gap-3 h-[2.5rem] mt-10">
-                <input type="text" name="search" id="search" placeholder="Search a name of items" className="text-[#676767] w-[25rem] bg-[#D9D9D9] border-2 border-solid border-[#525252] p-2 pb-3 pl-3"/>
+                <input type="text" name="search" id="search" placeholder="Search a name of items" className="text-[#353535] w-[25rem] bg-[#D9D9D9] border-2 border-solid border-[#525252] p-2 pb-3 pl-3"/>
                 <div className="min-h-full bg-[#22A2FF] border-2 border-solid border-[#0C436B] w-[2.5rem]"></div>
             </div>
 
@@ -31,7 +31,7 @@ export default function MarketClientPage() {
                     <div className="min-h-full min-w-[8rem] bg-[#C0C0C0]">&nbsp;</div>
                     <div className="flex justify-between w-full px-5">
                         <div className="flex flex-col justify-between py-2">
-                            <h1 className={`text-[1.7rem] font-kanit font-light pt-1`}>Wood log</h1>
+                            <h1 className={`text-[1.55rem] font-kanit font-light pt-1`}>Wood log</h1>
                             <p className="font-kanit font-light text-[1.2rem] pb-1">Sold by DeepKungChannel</p>
                         </div>
                         <div className="mr-[10%] text-[1.4rem] font-kanit font-light h-fit my-auto">Total amount: 1</div>
@@ -51,7 +51,7 @@ export default function MarketClientPage() {
 function ItemCard({children}: {children: ReactNode}) {
 
     return (
-        <div className="w-full h-[8rem] bg-[#E4E4E4] border-solid border-2 border-[#525252] flex">
+        <div className="w-full h-[8rem] border-solid border-2 border-[#525252] flex">
             {children}
         </div>
     )
