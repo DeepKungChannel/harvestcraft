@@ -86,12 +86,12 @@ function Box({children, target, setpg, runninginfo, socket} :
             setRunning(true)
             if (socket) {
                 socket.emit("gather", {target}, (val: GatheringApiAck) => {
-                    if (val.status == 200) {
-                        console.log((val.response as GatheringResponse).items)
-                    }
-                    else {
-                        console.log(val.response)
-                    }
+                    // if (val.status == 200) {
+                    //     console.log((val.response as GatheringResponse).items)
+                    // }
+                    // else {
+                    //     console.log(val.response)
+                    // }
                 })
             }
             setRunning(false)

@@ -30,27 +30,27 @@ def generateItemDrop(target, tools):
 loottable = {
     "wood": {
         "barehand": {"drop": {
-            "wood_logs": {"min": 1, "max" : 2, "chance": 1, "xp": 3}
+            "wood_log": {"min": 1, "max" : 2, "chance": 1, "xp": 3}
         }, "baseTime": 12},
         "axe1": {"drop": {
-            "wood_logs": {"min": 3, "max" : 3, "chance": 0.7, "xp": 3},
-            "branches": {"min": 1, "max": 2, "chance": 0.3, "xp": 1}
+            "wood_log": {"min": 3, "max" : 3, "chance": 0.7, "xp": 3},
+            "branche": {"min": 1, "max": 2, "chance": 0.3, "xp": 1}
         }, "baseTime": 10},
         "axe2": {"drop": {
-            "wood_logs": {"min": 6, "max" : 6, "chance": 0.7, "xp": 12},
-            "branches": {"min": 2, "max": 3, "chance": 0.3, "xp": 10},
+            "wood_log": {"min": 6, "max" : 6, "chance": 0.7, "xp": 12},
+            "branche": {"min": 2, "max": 3, "chance": 0.3, "xp": 10},
         }, "baseTime": 8},
         "ax3": {"drop": {
-            "wood_logs": {"min": 9, "max" : 9, "chance": 0.7, "xp": 12},
-            "branches": {"min": 4, "max": 6, "chance": 0.3, "xp": 10},
+            "wood_log": {"min": 9, "max" : 9, "chance": 0.7, "xp": 12},
+            "branche": {"min": 4, "max": 6, "chance": 0.3, "xp": 10},
         }, "baseTime": 7},
         "axe4": {"drop": {
-            "wood_logs": {"min": 12, "max" : 12, "chance": 0.7, "xp": 12},
-            "branches": {"min": 5, "max": 7, "chance": 0.3, "xp": 10},
+            "wood_log": {"min": 12, "max" : 12, "chance": 0.7, "xp": 12},
+            "branche": {"min": 5, "max": 7, "chance": 0.3, "xp": 10},
         }, "baseTime": 6},
         "axe5": {"drop": {
-            "wood_logs": {"min": 15, "max" : 15, "chance": 0.7, "xp": 12},
-            "branches": {"min": 6, "max": 7, "chance": 0.3, "xp": 10},
+            "wood_log": {"min": 15, "max" : 15, "chance": 0.7, "xp": 12},
+            "branche": {"min": 6, "max": 7, "chance": 0.3, "xp": 10},
         }, "baseTime": 5}
     },
     "stone": {

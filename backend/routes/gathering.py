@@ -22,7 +22,7 @@ async def sio_gathering(sid, data):
 
     user_session = await socketio_manager.get_session(sid)
     with DBSession() as sa:
-        user = sa.query(Users).filter(Users.id == user_session.get('id')).first()
+        user = sa.query(Users).filter(Users.id == uuid.UUID(user_session.get('id'))).first()
         if user is None:
             return {"status": 404, "response": 'User not found'}
         
@@ -66,6 +66,7 @@ async def sio_gathering(sid, data):
         # Update xp to user xp
         user.xp += itemDrops['xp']
         sa.commit()
+        await socketio_manager.emit('inventory', {"status": 200, "response": user.inventory}, room=user_session.get('id'))
 
     if "runningTasks" in user_session:
         if "gather" in user_session['runningTasks']:
@@ -74,45 +75,45 @@ async def sio_gathering(sid, data):
     
     return {"status": 200, "response": itemDrops}
 
-class Gatherbody(BaseModel):
-    target: str
+# class Gatherbody(BaseModel):
+#     target: str
 
 
-@router.post('/')
-async def gather(request: Request, body: Gatherbody):
-    session = UserSession(request)
-    signedin = CheckSignin(session)
+# @router.post('/')
+# async def gather(request: Request, body: Gatherbody):
+#     session = UserSession(request)
+#     signedin = CheckSignin(session)
 
-    if signedin:
-        with DBSession() as sa:
-            user = sa.query(Users).filter(Users.id == session.get_data().get("id")).first()
-            if user is None:
-                return HTTPException(404, "User not found")
-            target = body.target
+#     if signedin:
+#         with DBSession() as sa:
+#             user = sa.query(Users).filter(Users.id == session.get_data().get("id")).first()
+#             if user is None:
+#                 return HTTPException(404, "User not found")
+#             target = body.target
 
-            # Generate itemDrops
-            # Get user tool hand info
-            tool = user.equipment.get("hand")
-            if tool is None:
-                tool = 'barehand'
-            itemDrops = generateItemDrop(target, tool)
-            if itemDrops is None:
-                return HTTPException(400)
+#             # Generate itemDrops
+#             # Get user tool hand info
+#             tool = user.equipment.get("hand")
+#             if tool is None:
+#                 tool = 'barehand'
+#             itemDrops = generateItemDrop(target, tool)
+#             if itemDrops is None:
+#                 return HTTPException(400)
             
 
-            # Update item to user inventory
-            userInventory = dict(user.inventory)
-            for item in itemDrops['items']:
-                # Check if item exist
-                if item.get('name') in userInventory:
-                    userInventory[item['name']] += item['count']
-                else:
-                    userInventory.update({item['name']: item['count']})
+#             # Update item to user inventory
+#             userInventory = dict(user.inventory)
+#             for item in itemDrops['items']:
+#                 # Check if item exist
+#                 if item.get('name') in userInventory:
+#                     userInventory[item['name']] += item['count']
+#                 else:
+#                     userInventory.update({item['name']: item['count']})
             
-            user.inventory = userInventory
-            # Update xp to user xp
-            user.xp += itemDrops['xp']
-            sa.commit()
-        return itemDrops
-    else:
-        return HTTPException(401, "Unauthorize")
+#             user.inventory = userInventory
+#             # Update xp to user xp
+#             user.xp += itemDrops['xp']
+#             sa.commit()
+#         return itemDrops
+#     else:
+#         return HTTPException(401, "Unauthorize")

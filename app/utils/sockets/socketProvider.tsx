@@ -9,7 +9,7 @@ export default function SocketProvider({children}: {children: React.ReactNode}) 
     const [socket, setsocket] = useState<Socket | undefined>(undefined)
 
     useEffect(() => {
-        const newSocket = io(`/`,{ path: "/api/harvestcraft/ws/socket.io", extraHeaders: { authentication: "64021bf8-df1e-4fb3-811c-ce8a74714cfc"}})
+        const newSocket = io(`/`,{ path: "/api/harvestcraft/ws/socket.io", extraHeaders: { authentication: "64021bf8-df1e-4fb3-811c-ce8a74714cfc" }})
         newSocket.on("connect", () => {
             console.log("Connect socket io successfully")
         })

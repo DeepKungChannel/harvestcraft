@@ -15,6 +15,7 @@ app.add_middleware(SessionMiddleWare)
 
 from routes import auth
 from routes import gathering
+from routes import inventory
 
 app.include_router(auth.router, prefix="/api/harvestcraft/auth")
 app.include_router(gathering.router, prefix="/api/harvestcraft/gather")
