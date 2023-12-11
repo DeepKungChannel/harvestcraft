@@ -13,6 +13,10 @@ app = FastAPI()
 
 app.add_middleware(SessionMiddleWare)
 
+@app.get('/api/harvestcraft/ping')
+async def ping():
+    return {"status": 200, "response": "pong!"}
+
 from routes import auth
 from routes import gathering
 from routes import inventory

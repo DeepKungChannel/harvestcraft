@@ -18,7 +18,7 @@ async def auth(request: Request):
         data = session.get_data()
         username = data.get("username")
         email = data.get("email")
-        return { "status": 200, "username": username, "email": email }
+        return { "status": 200, "username": username, "email": email, "session": session.id }
 
     return HTTPException(401, "Unauthorize")
 

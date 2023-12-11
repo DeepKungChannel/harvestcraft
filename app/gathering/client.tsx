@@ -7,27 +7,26 @@ import Image from "next/image"
 
 import treeimg from '@/public/imgs/gathering/tree.png'
 import rockimg  from '@/public/imgs/gathering/rock.png'
-import { SocketContext } from "../utils/sockets/socketProvider"
+import { SocketContext, SocketSignedin } from "../utils/sockets/socketProvider"
 import { Socket } from "socket.io"
-
-
 
 export default function GatheringClientPage() {
     const socket = useContext(SocketContext)
+    const socketSignedin = useContext(SocketSignedin)
     const [pg, setpg] = useState(0)
     const [running, setRunning] = useState(false)
 
     function listener(data: any) {
         setpg(data.pg)
     }
+
     useEffect(() => {
-        if (socket) {
-            socket.on("gather", listener)
-            return () => {
-                socket.off("gather", listener)
-            }
+        socket?.on("gather", listener)
+    
+        return () => {
+            socket?.off("gather", listener)
         }
-    }, [socket])
+    }, [socket, socketSignedin])
     return (
         <>
         <Navbar/>
@@ -84,14 +83,9 @@ function Box({children, target, setpg, runninginfo, socket} :
     async function StartGathering(e: MouseEvent) {
         if (!running) {
             setRunning(true)
-            if (socket) {
+            if (socket?.connected) {
                 socket.emit("gather", {target}, (val: GatheringApiAck) => {
-                    // if (val.status == 200) {
-                    //     console.log((val.response as GatheringResponse).items)
-                    // }
-                    // else {
-                    //     console.log(val.response)
-                    // }
+
                 })
             }
             setRunning(false)

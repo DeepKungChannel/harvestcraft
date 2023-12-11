@@ -2,7 +2,7 @@
 
 import { ReactNode, useContext, useEffect, useState } from "react"
 import Navbar from "../components/navbar"
-import { SocketContext } from "../utils/sockets/socketProvider"
+import { SocketContext, SocketSignedin } from "../utils/sockets/socketProvider"
 import { SocketApiAck } from "../utils/sockets/socketTypes"
 import Image from "next/image"
 
@@ -10,6 +10,7 @@ import Image from "next/image"
 export default function InventoryClientPage(){
     const [inventoryData, setInventoryData] = useState({})
     const socket = useContext(SocketContext)
+    const socketSignedin = useContext(SocketSignedin)
 
     function ReceiveInventoryDateUpdate(val: SocketApiAck){
         if (val.status == 200) {
@@ -23,13 +24,12 @@ export default function InventoryClientPage(){
                     setInventoryData(val.response)
                 }
             })
-
             socket.on("inventory", ReceiveInventoryDateUpdate)            
         }
         return () => {
             socket?.off("inventory", ReceiveInventoryDateUpdate)
         }
-    }, [])
+    }, [socket, socketSignedin])
 
     
     
@@ -42,7 +42,7 @@ export default function InventoryClientPage(){
             <h1 className="font-soria text-[4rem] mt-5">Inventory</h1>
             <p className={`text-[1.4rem] font-lato`}>Manage your items here!</p>
 
-            <div className="grid grid-cols-5 place-items-center w-fit gap-[4rem] mt-[3rem] select-none pl-[3%]">
+            <div className="grid grid-cols-5 place-items-center w-fit gap-[4rem] mt-[3rem] select-none pl-[3%] mb-[3rem]">
                 <InventorySection inventoryData={inventoryData}/>
             </div>
 
