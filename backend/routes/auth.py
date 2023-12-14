@@ -46,8 +46,30 @@ async def signup(request: Request, body: SignupBody):
         user = sa.query(Users).filter(or_(Users.username == username, Users.email == email)).first()
         if user is not None:
             return HTTPException(409, "User has already existed.")
+        core = {
+            'gathering': {
+                "axe_mastery": 0,
+                "eco_friendly": 0,
+                'precision_strikes': 0,
+                "pickaxe_mastery": 0,
+                'mineral_expertise': 0,
+                'efficient_extraction': 0,
+                'sickle_mastery': 0,
+                'harvest_boost': 0,
+                "nature's_bounty": 0
+            },
+            'general' : {
+                'gathering_insight': 0,
+                'diligent_leaner': 0,
+                'tough_traveler': 0
+            }
+        }
+        equipment = {'hand': 'barehand'}
+        enable = {
+            "core": ["axe_mastery", "eco_friendly", "precision_strikes", "pickaxe_mastery"],
+        }
         newUser = Users(id=uuid.uuid4(), username=username, email=email, password=generate_hash_password(password),
-                        create_date=datetime.datetime.utcnow(), level=0, xp=0, inventory={}, equipment={})
+                        create_date=datetime.datetime.utcnow(), level=0, xp=0, inventory={}, equipment=equipment, core=core, enable=enable)
         sa.add(newUser)
         sa.commit()
     return {"status": 200}

@@ -17,6 +17,8 @@ class Users(Base):
     level = Column(INTEGER(), nullable=False, default=0)
     equipment = Column(JSON(), nullable=True)
     xp = Column(INTEGER(), nullable=False, default=0)
+    core = Column(JSON(), nullable=True)
+    enable = Column(JSON(), nullable=True)
 
 class Items(Base):
     __tablename__ = "items"

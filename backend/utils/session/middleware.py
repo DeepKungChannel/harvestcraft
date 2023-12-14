@@ -8,7 +8,7 @@ class SessionMiddleWare(BaseHTTPMiddleware):
         response = await call_next(request)
         session_id = request.scope.get('session_id')
         if session_id is not None and session_id != old_id:
-            response.set_cookie('session', session_id, httponly=True)
+            response.set_cookie('session', session_id, httponly=True, max_age=604800)
 
         else:
             if session_id is None and session_id != old_id:

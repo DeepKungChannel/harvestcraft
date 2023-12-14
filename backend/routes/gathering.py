@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException
 from utils.session.functional import Session as UserSession
 from utils.session.checker import CheckSignin
+from utils.cache import gathering as gathering_cache
 from pydantic import BaseModel
 from db.engine import session as DBSession
 from db.tables import Users
@@ -39,18 +40,31 @@ async def sio_gathering(sid, data):
             return {"status": 400, "response": "target or tool not found"}
         
         duration = itemDrops['baseTime']
+        inProcess = True if gathering_cache.get_gathering_state(str(user.id)) == 1 else False
+        
         if "runningTasks" in user_session:
             if "gather" in user_session['runningTasks']:
-                return {"status": 409, "response": 'Already running'}
+                inProcess = True
         
-        user_session.update({"runningTasks": ["gather"]})
+        if inProcess:
+            return {"status": 409, "response": 'Already running'}
+        
+
+
+        gathering_cache.set_gathering_state(str(user.id), 1)
+        if "runningTasks" not in user_session:
+            user_session.update({"runningTasks": ["gather"]})
+        else:
+            tasks = user_session.get("runningTasks")
+            if not "gather" in tasks:
+                user_session['runningTasks'].append("gather")
         await socketio_manager.save_session(sid, user_session)
 
         # emit pg message
         # get delay time of tool
         for i in range(1,101):
-            await socketio_manager.emit("gather", {"pg": i}, room=user_session.get('id'))
             await asyncio.sleep(duration/100)
+            await socketio_manager.emit("gather", {"pg": i}, room=user_session.get('id'))
         
 
         # Update item to user inventory
@@ -67,7 +81,9 @@ async def sio_gathering(sid, data):
         user.xp += itemDrops['xp']
         sa.commit()
         await socketio_manager.emit('inventory', {"status": 200, "response": user.inventory}, room=user_session.get('id'))
+        await socketio_manager.emit('level:set', {"status": 200, "response": {"level": user.level, "xp": user.xp}}, room=user_session.get('id'))
 
+    gathering_cache.set_gathering_state(str(user.id), 0)
     if "runningTasks" in user_session:
         if "gather" in user_session['runningTasks']:
             user_session['runningTasks'].remove("gather")

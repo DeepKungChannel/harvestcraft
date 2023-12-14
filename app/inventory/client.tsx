@@ -62,7 +62,7 @@ function InventorySection({inventoryData} : {inventoryData: any}) {
         else {
             element.push(
                 <Box position={i} key={i}>
-                    <Image alt="item" width={300} height={300} src={`/imgs/items/` + data[0] + ".png"} className="w-full p-3"/>
+                    <Image alt="item" onContextMenu={(e)=>{e.preventDefault()}} width={300} height={300} src={`/imgs/items/` + data[0] + ".png"} className="w-full p-3"/>
                     <div className="absolute z-20 bg-[#6DC2FF] px-[0.6rem] py-[0.15rem] -bottom-2 -right-2 rounded-[5px] font-montserrat text-[0.9rem]">{data[1] as any}x</div>
                 </Box>
             )

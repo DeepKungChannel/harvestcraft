@@ -20,6 +20,8 @@ async def ping():
 from routes import auth
 from routes import gathering
 from routes import inventory
+from routes import core
+from routes import level
 
 app.include_router(auth.router, prefix="/api/harvestcraft/auth")
 app.include_router(gathering.router, prefix="/api/harvestcraft/gather")
