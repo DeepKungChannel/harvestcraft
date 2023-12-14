@@ -13,7 +13,7 @@ export default function CraftingClientPage(){
         <div className="px-16">
             <h1 className="font-soria text-[4rem] mt-5">Crafting</h1>
             <p className="text-[1.4rem] font-lato">Crafting the tool weapon armor whatever you want!</p>
-            <Items className="border-[#6E6E6E] border-2 border-solid mt-[2rem] flex gap-3">
+            <Items>
                 
             </Items>
         </div>
