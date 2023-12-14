@@ -1,6 +1,8 @@
 from sockets import socketio_manager
 from db.engine import session as DBSession
 from db.tables import Users
+from module.level.response import getLevelResponse
+from module.level.calculate import get_current_level
 import uuid
 
 @socketio_manager.on("level:get")
@@ -13,4 +15,8 @@ async def getLevel(sid, _):
         if user is None:
             return {"status": 404, "respones": "User not found"}
         
-        return {"status": 200, "response": {"level": user.level, "xp": user.xp}}
+        user.level = get_current_level(user.xp)
+        sa.commit()
+        
+        return {"status": 200, "response": getLevelResponse(user)}
+    

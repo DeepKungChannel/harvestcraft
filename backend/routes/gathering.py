@@ -2,7 +2,8 @@ from fastapi import APIRouter, Request, HTTPException
 from utils.session.functional import Session as UserSession
 from utils.session.checker import CheckSignin
 from utils.cache import gathering as gathering_cache
-from pydantic import BaseModel
+from module.level.response import getLevelResponse
+from module.level.calculate import get_current_level
 from db.engine import session as DBSession
 from db.tables import Users
 from module.gathering.items import generateItemDrop
@@ -79,9 +80,10 @@ async def sio_gathering(sid, data):
         user.inventory = userInventory
         # Update xp to user xp
         user.xp += itemDrops['xp']
+        user.level = get_current_level(user.xp)
         sa.commit()
         await socketio_manager.emit('inventory', {"status": 200, "response": user.inventory}, room=user_session.get('id'))
-        await socketio_manager.emit('level:set', {"status": 200, "response": {"level": user.level, "xp": user.xp}}, room=user_session.get('id'))
+        await socketio_manager.emit('level:set', {"status": 200, "response": getLevelResponse(user)}, room=user_session.get('id'))
 
     gathering_cache.set_gathering_state(str(user.id), 0)
     if "runningTasks" in user_session:
