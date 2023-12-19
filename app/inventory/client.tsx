@@ -46,6 +46,24 @@ export default function InventoryClientPage(){
                 <InventorySection inventoryData={inventoryData}/>
             </div>
 
+            {/* equipment section */}
+            <div className="fixed right-20 top-[55%] -translate-y-1/2">
+                <div className="flex flex-col gap-5">
+                    <Box position={0} >
+                        &nbsp;
+                    </Box>
+                    <Box position={1} >
+                        &nbsp;
+                    </Box>
+                    <Box position={2} >
+                        &nbsp;
+                    </Box>
+                    <Box position={3} >
+                        &nbsp;
+                    </Box>
+                </div>
+            </div>
+
         </div>
         </>
     )
@@ -74,11 +92,8 @@ function InventorySection({inventoryData} : {inventoryData: any}) {
 }
 
 function Box({children, picturePath, position}: {children: ReactNode, position:number, picturePath?: string}){
-
-
-
     return (
-        <div className="bg-[#D9D9D9] border-[#6E6E6E] border-solid border-2 w-[7rem] h-[7rem] relative" onDrop={(e) => {console.log("from",JSON.parse(e.dataTransfer.getData('application/json')).position, "to", position)}} onDragStart={(e)=>{e.dataTransfer.setData("application/json", JSON.stringify({position:position}))}} onDragOver={(e)=>{e.preventDefault()}} draggable={true}>
+        <div className="bg-[#D9D9D9] border-[#6E6E6E] border-solid border-2 w-[7rem] h-[7rem] relative" onDrop={(e) => {console.log("from",JSON.parse(e.dataTransfer.getData('application/json')).position, "to", position)}} onDragStart={(e)=>{e.dataTransfer.setData("application/json", JSON.stringify({position: position}))}} onDragOver={(e)=>{e.preventDefault()}} draggable={true}>
             {children}
         </div>
     )
